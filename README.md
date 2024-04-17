@@ -21,3 +21,24 @@ Para utilizar este framework, simplemente clona este repositorio en tu entorno d
 ```bash
 git clone https://github.com/tu-usuario/pentesting-toolkit-framework.git
 cd pentesting-toolkit-framework
+```
+
+## Uso
+Navega al directorio correspondiente a la etapa del pentesting que estás realizando y encontrarás las herramientas listadas para su uso. Asegúrate de leer la documentación específica de cada herramienta para entender su funcionamiento y configuración adecuada.
+
+## Contribuciones
+Las contribuciones a este proyecto son bienvenidas. Si deseas añadir nuevas herramientas o mejorar las existentes, sigue estos pasos:
+```
+1. Haz un fork del repositorio.
+2. Crea una rama nueva para tus cambios (git checkout -b feature-nueva-herramienta).
+3. Realiza tus cambios y haz commit de ellos (git commit -am 'Añadir nueva herramienta').
+4. Push a la rama (git push origin feature-nueva-herramienta).
+5. Crea un pull request.
+```
+## Licencia
+Este proyecto está licenciado bajo la Licencia MIT, lo que permite su uso, modificación y distribución libres.
+
+## Contacto
+Para preguntas o soporte, por favor abre un issue en este repositorio o contacta al administrador del repositorio en [tu-email@dominio.com].
+
+Esperamos que este framework te ayude a realizar pruebas de penetración más organizadas y efectivas.
