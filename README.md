@@ -6,13 +6,13 @@ Bienvenido al repositorio del Pentesting Toolkit Framework, una estructura organ
 
 Este repositorio está dividido en directorios que corresponden a las distintas etapas del pentesting. Cada directorio contiene las herramientas adecuadas para esa etapa específica del proceso, así como scripts y configuraciones útiles.
 
-- `01-Reconocimiento/` - Herramientas y scripts para la recopilación de información inicial sobre los sistemas objetivo.
+- `01-Reconocimiento/` - Herramientas y scripts para la recopilación de información.
 - `02-Escaneo/` - Herramientas para el análisis y mapeo de puertos y vulnerabilidades.
-- `03-Ganancia-de-acceso/` - Herramientas utilizadas para explotar vulnerabilidades y ganar acceso a los sistemas.
-- `04-Mantenimiento-del-acceso/` - Herramientas y técnicas para mantener el acceso en un sistema comprometido.
-- `05-Análisis-de-vulnerabilidades/` - Herramientas especializadas en la detección y clasificación de vulnerabilidades.
+- `03-Acceso/` - Herramientas utilizadas para ganar acceso a los sistemas.
+- `04-Mantener-acceso/` - Herramientas y técnicas para mantener el acceso en un sistema.
+- `05-Vulnerabilidades/` - Herramientas especializadas en la detección y clasificación de vulnerabilidades.
 - `06-Post-explotación/` - Herramientas para la recolección de datos post-explotación y movimientos laterales.
-- `07-Reporte/` - Herramientas y plantillas para la generación de informes detallados sobre los hallazgos del pentesting.
+- `07-Reportes/` - Herramientas y plantillas para la generación de informes detallados sobre los hallazgos del pentesting.
 
 ## Instalación
 
