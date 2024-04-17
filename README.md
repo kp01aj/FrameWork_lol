@@ -39,6 +39,6 @@ Las contribuciones a este proyecto son bienvenidas. Si deseas añadir nuevas her
 Este proyecto está licenciado bajo la Licencia MIT, lo que permite su uso, modificación y distribución libres.
 
 ## Contacto
-Para preguntas o soporte, por favor abre un issue en este repositorio o contacta al administrador del repositorio en [tu-email@dominio.com].
+Para preguntas o soporte, por favor abre un issue en este repositorio o contacta al administrador del repositorio en kp01aj@gmail.com.
 
 Esperamos que este framework te ayude a realizar pruebas de penetración más organizadas y efectivas.
