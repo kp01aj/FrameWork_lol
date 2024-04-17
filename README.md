@@ -11,7 +11,7 @@ Este repositorio está dividido en directorios que corresponden a las distintas 
 - `03-Acceso/` - Herramientas utilizadas para ganar acceso a los sistemas.
 - `04-Mantener-acceso/` - Herramientas y técnicas para mantener el acceso en un sistema.
 - `05-Vulnerabilidades/` - Herramientas especializadas en la detección y clasificación de vulnerabilidades.
-- `06-Post-explotación/` - Herramientas para la recolección de datos post-explotación y movimientos laterales.
+- `06-Post-explotación/` - Herramientas para la recolección de datos y movimientos laterales.
 - `07-Reportes/` - Herramientas y plantillas para la generación de informes detallados sobre los hallazgos del pentesting.
 
 ## Instalación
