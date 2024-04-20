@@ -1,7 +1,8 @@
 #!/bin/bash
 # Creado por KernelPanicRD01
 # kp01aj@gmail.com
-# Este script contiene de las opcioens mas utilizadas con Nmap para hacer un proceso de enumeracion.
+# Este script contiene de opciones orientadas a NSE utilizadas con Nmap para hacer un proceso de enumeracion.
+# Base en un MENU
 
 #!/bin/bash
 
