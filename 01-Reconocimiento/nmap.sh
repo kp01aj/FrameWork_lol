@@ -3,6 +3,8 @@
 # kp01aj@gmail.com
 # Este script contiene de las opcioens mas utilizadas con Nmap para hacer un proceso de enumeracion.
 
+#!/bin/bash
+
 # Colores
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -10,87 +12,64 @@ YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Función para mostrar el menú
-show_menu() {
-    echo -e "${GREEN}Menú de opciones de Nmap 🌐${NC}"
-    echo -e "${YELLOW}1.${NC} Escaneo de Puertos Completo 🚀"
-    echo -e "${YELLOW}2.${NC} Detección de Servicios y Versión 📡"
-    echo -e "${YELLOW}3.${NC} Detección de Sistema Operativo 🖥️"
-    echo -e "${YELLOW}4.${NC} Escaneo de Scripts 📜"
-    echo -e "${YELLOW}5.${NC} Escaneo Agresivo 🏹"
-    echo -e "${YELLOW}6.${NC} Escaneo UDP 🛰️"
-    echo -e "${YELLOW}7.${NC} Escaneo Stealth 🕶️"
-    echo -e "${YELLOW}8.${NC} Escaneo de Subred 🔍"
-    echo -e "${YELLOW}9.${NC} Escaneo de IPs desde un Archivo 📂"
-    echo -e "${YELLOW}10.${NC} Guardar los Resultados en un Archivo 📋"
-    echo -e "${YELLOW}11.${NC} Ayuda 🆘"
-    echo -e "${YELLOW}12.${NC} Salir 🚪"
+# Ruta donde se encuentran los scripts NSE
+NSE_PATH="/usr/share/nmap/scripts/"
+
+# Ayuda
+usage() {
+    echo -e "${GREEN}Uso del script de Nmap:${NC}"
+    echo -e "${YELLOW}-s${NC} <IP/domain>       Realiza un escaneo simple de nmap."
+    echo -e "${YELLOW}-d${NC} <IP range>       Realiza un discovery de IPs en un rango de red."
+    echo -e "${YELLOW}-v${NC} <IP/domain>       Realiza un escaneo detallado y busca vulnerabilidades."
+    echo -e "${YELLOW}-n${NC} <keyword>         Busca y selecciona script NSE por palabra clave."
+    echo -e "${YELLOW}-u${NC}                   Actualiza la base de datos de scripts NSE."
+    echo -e "${YELLOW}-h${NC}                   Muestra este mensaje de ayuda."
+    exit 1
 }
 
-# Función para leer la opción del usuario
-read_option() {
-    local choice
-    read -p "Ingrese la opción deseada [1 - 12]: " choice
-    echo $choice
-}
+# Comprobar si se proporcionaron parámetros
+if [ $# -eq 0 ]; then
+    usage
+fi
 
-# Funciones para cada comando de Nmap
-perform_action() {
-    case $1 in
-        1) nmap -p- -v $2 ;;
-        2) nmap -sV $2 ;;
-        3) nmap -A $2 ;;
-        4) nmap --script=vuln $2 ;;
-        5) nmap -A -T4 $2 ;;
-        6) nmap -sU $2 ;;
-        7) nmap -sS $2 ;;
-        8) nmap -sV -p 80,443 $2 ;;
-        9) nmap -iL $2 ;;
-        10) nmap -oN salida.txt $2; echo "Resultados guardados en salida.txt" ;;
-    esac
-    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
-    read
-}
-
-# Función de ayuda
-show_help() {
-    echo -e "${BLUE}Ayuda - Descripciones de las opciones del menú:${NC}"
-    echo -e "${YELLOW}1.${NC} Escanea todos los puertos de una IP o dominio."
-    echo -e "${YELLOW}2.${NC} Identifica los servicios y sus versiones en los puertos abiertos."
-    echo -e "${YELLOW}3.${NC} Realiza un escaneo completo que incluye OS, servicios, versión y traceroute."
-    echo -e "${YELLOW}4.${NC} Ejecuta scripts de Nmap para identificar vulnerabilidades."
-    echo -e "${YELLOW}5.${NC} Escaneo agresivo para detección rápida."
-    echo -e "${YELLOW}6.${NC} Escaneo de puertos UDP."
-    echo -e "${YELLOW}7.${NC} Realiza un escaneo stealth, útil para evadir IDS/IPS."
-    echo -e "${YELLOW}8.${NC} Escanea múltiples hosts en una subred específica."
-    echo -e "${YELLOW}9.${NC} Escanea IPs listadas en un archivo."
-    echo -e "${YELLOW}10.${NC} Guarda los resultados del escaneo en un archivo."
-    echo -e "${YELLOW}11.${NC} Muestra esta ayuda."
-    echo -e "${YELLOW}12.${NC} Salir del script."
-    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
-    read
-}
-
-# Ejecución del menú
-while true
-do
-    show_menu
-    option=$(read_option)
+# Manejar opciones de línea de comandos
+while getopts ":s:d:v:n:uh" option; do
     case $option in
-        1|2|3|4|5|6|7|8|9|10)
-            echo -e "${RED}Ingresar dirección IP o dominio:${NC}"
-            read target
-            perform_action $option $target
+        s) # Escaneo simple
+            nmap $OPTARG
             ;;
-        11)
-            show_help
+        d) # Discovery de red
+            nmap -sn $OPTARG
             ;;
-        12)
-            echo -e "${GREEN}Saliendo...${NC}"
-            break
+        v) # Escaneo detallado y vulnerabilidades
+            nmap -sV -A -T4 --script=default,vuln $OPTARG
             ;;
-        *)
-            echo -e "${RED}Opción incorrecta. Intente de nuevo.${NC}"
+        n) # Buscar script NSE
+            scripts=($(grep -l -R "$OPTARG" $NSE_PATH | grep '\.nse$'))
+            if [ ${#scripts[@]} -eq 0 ]; then
+                echo -e "${RED}No se encontraron scripts que coincidan con la búsqueda.${NC}"
+                exit 1
+            fi
+            echo -e "${GREEN}Scripts encontrados:${NC}"
+            for script in "${scripts[@]}"; do
+                local description=$(grep -m1 'description = ' $script | cut -d '"' -f 2)
+                echo -e "${YELLOW}${script#$NSE_PATH} - ${description}${NC}"
+            done
+            ;;
+        u) # Actualizar scripts NSE
+            nmap --script-updatedb
+            ;;
+        h) # Ayuda
+            usage
+            ;;
+        \?) # Opción inválida
+            echo -e "${RED}Opción inválida: -$OPTARG${NC}" >&2
+            usage
             ;;
     esac
 done
+
+# Verificar si se utilizó alguna opción
+if [ $OPTIND -eq 1 ]; then
+    usage
+fi
