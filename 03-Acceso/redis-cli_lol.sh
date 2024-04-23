@@ -1,4 +1,11 @@
 #!/bin/bash
+#
+# L       OOO   L     !
+# L      O   O  L     !
+# L      O   O  L     !
+# L      O   O  L      
+# LLLLL   OOO   LLLLL !
+
 # Creado por KernelPanicRD01
 # kp01aj@gmail.com
 # https://discord.gg/VZ7PFx7C
