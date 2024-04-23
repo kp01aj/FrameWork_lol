@@ -4,6 +4,14 @@
 # Este script contiene de opciones orientadas a NSE utilizadas con Nmap para hacer un proceso de enumeracion.
 # Base en un MENU
 
+#Descripción del Script
+#Opción 1: Realiza un escaneo simple de Nmap.
+#Opción 2: Descubre dispositivos activos dentro de un rango de red especificado.
+#Opción 3: Realiza un escaneo detallado de la IP o dominio objetivo y luego aplica scripts NSE relevantes para identificar vulnerabilidades.
+#Opción 4: Permite buscar scripts NSE por palabras clave y seleccionar uno para ejecutarlo en un objetivo especificado.
+#Opción 5: Actualiza la base de datos de scripts NSE para asegurar que se usen las versiones más recientes.
+#Opción 6: Salir del script.
+
 # Colores
 RED='\033[0;31m'
 GREEN='\033[0;32m'
