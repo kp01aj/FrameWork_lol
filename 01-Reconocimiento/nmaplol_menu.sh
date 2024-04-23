@@ -1,8 +1,7 @@
 #!/bin/bash
 # Creado por KernelPanicRD01
 # kp01aj@gmail.com
-# Este script contiene de opciones orientadas a NSE utilizadas con Nmap para hacer un proceso de enumeracion.
-# Base en un MENU
+#https://discord.gg/VZ7PFx7C
 
 #Descripción del Script
 #Opción 1: Realiza un escaneo simple de Nmap.
