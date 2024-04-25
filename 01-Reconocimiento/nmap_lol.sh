@@ -10,13 +10,7 @@
 # kp01aj@gmail.com
 #https://discord.gg/VZ7PFx7C
 
-#Descripción del Script
-#Opción 1: Realiza un escaneo simple de Nmap.
-#Opción 2: Descubre dispositivos activos dentro de un rango de red especificado.
-#Opción 3: Realiza un escaneo detallado de la IP o dominio objetivo y luego aplica scripts NSE relevantes para identificar vulnerabilidades.
-#Opción 4: Permite buscar scripts NSE por palabras clave y seleccionar uno para ejecutarlo en un objetivo especificado.
-#Opción 5: Actualiza la base de datos de scripts NSE para asegurar que se usen las versiones más recientes.
-#Opción 6: Salir del script.
+#!/bin/bash
 
 # Colores
 RED='\033[0;31m'
@@ -24,34 +18,32 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
-
-# Ruta donde se encuentran los scripts NSE
-NSE_PATH="/usr/share/nmap/scripts/"
+MATRIX_GREEN='\033[0;32m'
 
 # Función para mostrar el menú principal
 show_menu() {
-    echo -e "${GREEN}Menú Principal de Nmap para Detección y Análisis de Redes 🛡️${NC}"
-    echo -e "${YELLOW}1.${NC} Hacer un scan simple de nmap"
-    echo -e "${YELLOW}2.${NC} Hacer un discovery de IPs en un rango de red"
-    echo -e "${YELLOW}3.${NC} Hacer un scan detallado y aplicar scripts NSE relevantes"
-    echo -e "${YELLOW}4.${NC} Buscar y seleccionar script NSE para ejecución"
-    echo -e "${YELLOW}5.${NC} Actualizar base de datos de scripts NSE"
-    echo -e "${YELLOW}6.${NC} Escanear puertos específicos"
-    echo -e "${YELLOW}7.${NC} Escaneo de versiones de servicios"
-    echo -e "${YELLOW}8.${NC} Escaneo agresivo"
-    echo -e "${YELLOW}9.${NC} Detección de sistema operativo"
-    echo -e "${YELLOW}10.${NC} Escaneo de firewall"
-    echo -e "${YELLOW}11.${NC} Escaneo UDP"
-    echo -e "${YELLOW}12.${NC} Escaneo de fragmentación"
-    echo -e "${YELLOW}13.${NC} Escaneo de scripts por categoría"
-    echo -e "${YELLOW}14.${NC} Chequeo de vulnerabilidades específicas"
-    echo -e "${YELLOW}15.${NC} Análisis completo de red"
-    echo -e "${YELLOW}16.${NC} Escaneo silencioso (Stealth)"
-    echo -e "${YELLOW}17.${NC} Escaneo de sincronización TCP (TCP SYN scan)"
-    echo -e "${YELLOW}18.${NC} Escaneo con salida en XML"
-    echo -e "${YELLOW}19.${NC} Realizar traceroute"
-    echo -e "${YELLOW}20.${NC} Uso de decoys"
-    echo -e "${YELLOW}21.${NC} Salir"
+    echo -e "${GREEN}🔍 Menú Principal de Nmap para Detección y Análisis de Redes 🌐${NC}"
+    echo -e "${GREEN}1. Hacer un scan simple de nmap 🌟${NC}"
+    echo -e "${GREEN}2. Hacer un discovery de IPs en un rango de red 🔎${NC}"
+    echo -e "${GREEN}3. Hacer un scan detallado y aplicar scripts NSE relevantes 🔬${NC}"
+    echo -e "${GREEN}4. Buscar y seleccionar script NSE para ejecución 📄${NC}"
+    echo -e "${GREEN}5. Actualizar base de datos de scripts NSE 🔄${NC}"
+    echo -e "${GREEN}6. Escanear puertos específicos 🚪${NC}"
+    echo -e "${GREEN}7. Escaneo de versiones de servicios 🛠️${NC}"
+    echo -e "${GREEN}8. Escaneo agresivo ⚔️${NC}"
+    echo -e "${GREEN}9. Detección de sistema operativo 💻${NC}"
+    echo -e "${GREEN}10. Escaneo de firewall 🧱${NC}"
+    echo -e "${GREEN}11. Escaneo UDP 📡${NC}"
+    echo -e "${GREEN}12. Escaneo de fragmentación 🧩${NC}"
+    echo -e "${GREEN}13. Escaneo de scripts por categoría 🗂️${NC}"
+    echo -e "${GREEN}14. Chequeo de vulnerabilidades específicas 🎯${NC}"
+    echo -e "${GREEN}15. Análisis completo de red 🌍${NC}"
+    echo -e "${GREEN}16. Escaneo silencioso (Stealth) 🕵️${NC}"
+    echo -e "${GREEN}17. Escaneo de sincronización TCP (TCP SYN scan) 🌊${NC}"
+    echo -e "${GREEN}18. Escaneo con salida en XML 📊${NC}"
+    echo -e "${GREEN}19. Realizar traceroute 🛤️${NC}"
+    echo -e "${GREEN}20. Uso de decoys 🎭${NC}"
+    echo -e "${GREEN}21. Salir 🚪${NC}"
 }
 
 # Función para leer la opción del usuario
@@ -61,12 +53,182 @@ read_option() {
     echo $choice
 }
 
-# Aquí se deberían definir las funciones de escaneo detalladas para cada una de las opciones adicionales
-# Por ejemplo, la función para el escaneo agresivo:
-aggressive_scan() {
+# Función general para pedir objetivo
+get_target() {
     echo -e "${RED}Ingrese la dirección IP o dominio del objetivo:${NC}"
     read target
+    echo $target
+}
+
+# Funciones para cada opción del menú
+simple_scan() {
+    local target=$(get_target)
+    nmap $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+network_discovery() {
+    echo -e "${RED}Ingrese el rango de red (ej. 192.168.1.0/24):${NC}"
+    read range
+    nmap -sn $range
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+detailed_scan_and_nse() {
+    local target=$(get_target)
+    nmap -sV -A -T4 --script=default,vuln $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+search_and_select_nse() {
+    echo -e "${RED}Ingrese palabra clave para buscar en los scripts NSE (ej. 'smb', 'http', 'ssl'):${NC}"
+    read keyword
+    local scripts=($(find /usr/share/nmap/scripts/ -name "*$keyword*.nse"))
+    if [ ${#scripts[@]} -eq 0 ]; then
+        echo -e "${RED}No se encontraron scripts que coincidan con la búsqueda.${NC}"
+        return
+    fi
+    echo "Scripts encontrados:"
+    local index=1
+    for script in "${scripts[@]}"; do
+        echo -e "${YELLOW}${index}. $(basename $script)${NC}"
+        let index++
+    done
+    echo -e "${RED}Seleccione el número del script que desea ejecutar o 0 para cancelar:${NC}"
+    read selection
+    if [[ $selection -gt 0 && $selection -le ${#scripts[@]} ]]; then
+        local target=$(get_target)
+        nmap --script "${scripts[$selection-1]}" $target
+    elif [[ $selection -eq 0 ]]; then
+        echo "Cancelando selección..."
+    else
+        echo -e "${RED}Selección inválida. Intente de nuevo.${NC}"
+    fi
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+update_nse() {
+    echo -e "${GREEN}Actualizando la base de datos de scripts NSE...${NC}"
+    nmap --script-updatedb
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+# Implementaciones para las opciones adicionales
+specific_port_scan() {
+    local target=$(get_target)
+    echo -e "${RED}Ingrese los puertos a escanear (ej. 80,443):${NC}"
+    read ports
+    nmap -p $ports $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+service_version_scan() {
+    local target=$(get_target)
+    nmap -sV $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+aggressive_scan() {
+    local target=$(get_target)
     nmap -A $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+os_detection_scan() {
+    local target=$(get_target)
+    nmap -O $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+firewall_scan() {
+    local target=$(get_target)
+    nmap -sA $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+udp_scan() {
+    local target=$(get_target)
+    nmap -sU $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+fragment_scan() {
+    local target=$(get_target)
+    nmap -f $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+script_category_scan() {
+    echo -e "${RED}Ingrese la categoría de scripts a ejecutar (ej. 'safe', 'intrusive'):${NC}"
+    read category
+    local target=$(get_target)
+    nmap --script=$category $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+specific_vulnerability_check() {
+    echo -e "${RED}Ingrese el script de vulnerabilidad específica (ej. smb-vuln-ms08-067.nse):${NC}"
+    read vuln_script
+    local target=$(get_target)
+    nmap --script=$vuln_script $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+complete_network_analysis() {
+    local target=$(get_target)
+    nmap -sS -sU -sC -A -O -p- $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+stealth_scan() {
+    local target=$(get_target)
+    nmap -sS $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+tcp_syn_scan() {
+    local target=$(get_target)
+    nmap -sS $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+xml_output_scan() {
+    local target=$(get_target)
+    nmap -oX output.xml $target
+    echo -e "${GREEN}Resultados guardados en 'output.xml'${NC}"
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+perform_traceroute() {
+    local target=$(get_target)
+    nmap --traceroute $target
+    echo -e "${BLUE}Presione <Enter> para continuar${NC}"
+    read
+}
+
+use_decoys() {
+    local target=$(get_target)
+    echo -e "${RED}Ingrese la lista de decoys, separados por comas (ej. me,decoy1,decoy2):${NC}"
+    read decoys
+    nmap -D $decoys $target
     echo -e "${BLUE}Presione <Enter> para continuar${NC}"
     read
 }
