@@ -1,0 +1,3 @@
+nmap -sC -sV <IP> #Version y Script default
+nmap -p- -sV <IP> 
+nmap -p- --min-rate 1000 -sV <IP> #Acelera el scan
