@@ -1,0 +1,7 @@
+admin
+root
+administrator
+administrador
+bravo
+user
+usuario
