@@ -1,4 +1,6 @@
 #!/bin/bash
+#Pentesting Toolkit Framework_lol
+
 set -Eeuo pipefail
 
 # force-brute.sh – Wrapper de Hydra con salida en vivo, paralelo y reporte CSV (sin duplicados)
